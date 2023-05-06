@@ -34,10 +34,10 @@ def about():
 @app.route("/Login", methods=['POST', 'GET'])
 def Login():
     reg_id = (request.form['reg_id']).lower()
-    reg_pass = request. form['reg_pass']
+    reg_pass = request.form['reg_pass']
 
-    check_id = "SELECT COUNT (reg_id) FROM user WHERE reg_id=(%s)"
-    check_pass = "SELECT COUNT(reg_pass) FROM user WHERE reg_pass-(%s) "
+    check_id = "SELECT COUNT(reg_id) FROM Login WHERE reg_id=(%s)"
+    check_pass = "SELECT COUNT(reg_pass) FROM Login WHERE reg_pass=(%s)"
     correct_id = False
     correct_pass = False
     cursor = db_conn.cursor()
@@ -45,7 +45,7 @@ def Login():
     if (cursor.execute(check_id, (reg_id)))>0:
         correct_id = True
         
-    if (cursor.execute(check_pass, (reg_pass))) >0:
+    if (cursor.execute(check_pass, (reg_pass)))>0:
         correct_pass = True
 
     if correct_id and correct_pass:
@@ -56,6 +56,10 @@ def Login():
         correct_id = False
         correct_pass = False
         return render_template('Login.html')
+    
+@app.route("/Login")
+def goLogin():
+    return render_template('Login.html')
 
 
 @app.route("/Register", methods=['GET', 'POST'])
@@ -64,8 +68,8 @@ def registerEmp():
     reg_pass = request.form['reg_pass']
     reg_conf_pass = request.form['reg_conf_pass']
     
-    insert_sql = "INSERT INTO register VALUES (%s, %s)"
-    select_sql = "SELECT * FROM register WHERE reg_id=(%s)"
+    insert_sql = "INSERT INTO Login VALUES (%s, %s)"
+    select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
     cursor = db_conn.cursor()
     cursor.execute(select_sql, (reg_id))
     regid_no=cursor.fetchall()
