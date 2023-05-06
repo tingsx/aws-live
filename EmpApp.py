@@ -92,22 +92,25 @@ def registerEmp():
 @app.route("/AddEmp", methods=['POST'])
 def AddEmp():
     if request.method == 'POST':
-        emp_id = request.form['emp_id']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        pri_skill = request.form['pri_skill']
-        location = request.form['location']
-        emp_image_file = request.files['emp_image_file']
+        try:
+            emp_id = request.form['emp_id']
+            first_name = request.form['first_name']
+            last_name = request.form['last_name']
+            pri_skill = request.form['pri_skill']
+            location = request.form['location']
+            emp_image_file = request.files['emp_image_file']
+        except KeyError as e:
+            return f"Missing required key: {e}", 400
         
         # rest of the code
     else:
-        return "Invalid request method"
+        return "Invalid request method", 400
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
     if emp_image_file.filename == "":
-        return "Please select a file"
+        return "Please select a file", 400
 
     try:
 
@@ -135,7 +138,7 @@ def AddEmp():
                 emp_image_file_name_in_s3)
 
         except Exception as e:
-            return str(e)
+            return str(e), 500
 
     finally:
         cursor.close()
