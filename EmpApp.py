@@ -88,6 +88,23 @@ def registerEmp():
         return render_template("Login.html")
 
 
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/Login.html')
+def login():
+    return render_template('Login.html')
+
+@app.route('/Register.html')
+def register():
+    return render_template('Register.html')
+
+@app.route('/Home.html')
+def home():
+    return render_template('Home.html')
+
+
 @app.route("/addemp", methods=['POST'])
 def AddEmp():
     emp_id = request.form['emp_id']
