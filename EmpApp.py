@@ -4,6 +4,7 @@ import os
 import boto3
 from config import *
 from werkzeug.exceptions import BadRequestKeyError
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -56,66 +57,38 @@ def Login():
 
 
 
-@app.route("/Register", methods=['GET', 'POST'])
-def registerEmp():
-    try:
-        reg_id = request.form['reg_id']
-        reg_pass = request.form['reg_pass']
-        reg_conf_pass = request.form['reg_conf_pass']
-    except BadRequestKeyError:
-        print("Bad Request")
-        return render_template('Register.html')
+from PIL import Image
 
-    insert_sql = "INSERT INTO Login VALUES (%s, %s)"
-    select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(select_sql, (reg_id,))
-    regid_no = cursor.fetchall()
-
-    if reg_conf_pass != reg_pass:
-        print("Confirm password is wrong.")
-        return render_template('Register.html')
-    elif len(regid_no) != 0:
-        print("This ID already exists. Please enter another one.")
-        return render_template('Register.html')
-    else:
-        try:
-            cursor.execute(insert_sql, (reg_id, reg_pass))
-            db_conn.commit()
-        finally:
-            cursor.close()
-
-        print("Successfully registered")
-        return render_template("Login.html")
-
-@app.route("/addemp", methods=['GET', 'POST'])
 def AddEmp():
     emp_id = request.form.get("emp_id", False)
-    frist_name = request.form.get("first_name", False)
+    first_name = request.form.get("first_name", False)
     last_name = request.form.get("last_name", False)
     pri_skill = request.form.get("pri_skill", False)
     location = request.form.get("location", False)
-    #emp_request_file = request.files.get("emp_image_file")
-    img = Image.open(request.files['emp_image_file'].stream)
+    emp_request_file = request.files.get("emp_image_file")
+    if emp_request_file:
+        emp_image_file = emp_request_file.filename
+        emp_image = Image.open(emp_request_file.stream)
+    else:
+        return "No emp_image_file found in the request"
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
-    if emp_image_file.filename == "":
+    if emp_image_file == "":
         return "Please select a file"
 
     try:
-
         cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
-        # Uplaod image file in S3 #
+        # Upload image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
 
         try:
             print("Data inserted in MySQL RDS... uploading image to S3...")
-            s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image_file)
+            s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image)
             bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
             s3_location = (bucket_location['LocationConstraint'])
 
