@@ -2,45 +2,60 @@
 <html>
 <head>
 	<title>Get Employee Information</title>
+	<style>
+		body {
+			background-color: beige;
+		}
+		h1 {
+			color: navy;
+			font-size: 36px; /* adjust as needed */
+		}
+		p {
+			color: red;
+			font-size: 30px; /* adjust as needed */
+		}
+	</style>
 </head>
 <body>
-	<h1>Get Employee Information</h1>
-	<form method="POST" action="{{ url_for('GetEmp') }}">
-		<label for="emp_id">Employee ID:</label>
-		<input type="text" id="emp_id" name="emp_id" required>
-		<input type="submit" value="Get Info">
-	</form>
-	{% if error %}
-		<p style="color:red;">Invalid Employee ID. Please try again.</p>
-	{% endif %}
-	{% if fname %}
-		<h2>Employee Information:</h2>
-		<table>
-			<tr>
-				<td>ID:</td>
-				<td>{{ id }}</td>
-			</tr>
-			<tr>
-				<td>First Name:</td>
-				<td>{{ fname }}</td>
-			</tr>
-			<tr>
-				<td>Last Name:</td>
-				<td>{{ lname }}</td>
-			</tr>
-			<tr>
-				<td>Primary Skill:</td>
-				<td>{{ interest }}</td>
-			</tr>
-			<tr>
-				<td>Location:</td>
-				<td>{{ location }}</td>
-			</tr>
-			<tr>
-				<td>Image URL:</td>
-				<td>{{ image_url }}</td>
-			</tr>
-		</table>
-	{% endif %}
+	<center>
+		<h1>Get Employee Information</h1>
+		<form method="POST" action="{{ url_for('GetEmp') }}">
+			<label for="emp_id">Employee ID:</label>
+			<input type="text" id="emp_id" name="emp_id" required>
+			<input type="submit" value="Get Info">
+		</form>
+		{% if error %}
+			<p>Invalid Employee ID. Please try again.</p>
+		{% endif %}
+		{% if fname %}
+			<h2>Employee Information:</h2>
+			<table>
+				<tr>
+					<td>ID:</td>
+					<td>{{ id }}</td>
+				</tr>
+				<tr>
+					<td>First Name:</td>
+					<td>{{ fname }}</td>
+				</tr>
+				<tr>
+					<td>Last Name:</td>
+					<td>{{ lname }}</td>
+				</tr>
+				<tr>
+					<td>Primary Skill:</td>
+					<td>{{ interest }}</td>
+				</tr>
+				<tr>
+					<td>Location:</td>
+					<td>{{ location }}</td>
+				</tr>
+				<tr>
+					<td>Image URL:</td>
+					<td>{{ image_url }}</td>
+				</tr>
+			</table>
+		 {% endif %}
+	</center>
 </body>
 </html>
