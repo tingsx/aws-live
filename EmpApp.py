@@ -34,13 +34,14 @@ def about():
 
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
+    error = None
     try:
         reg_id = request.form['reg_id']
         reg_pass = request.form['reg_pass']
         reg_conf_pass = request.form['reg_conf_pass']
     except BadRequestKeyError:
         print("Bad Request")
-        return render_template('Register.html')
+        return render_template('Register.html', error="Bad Request")
 
     insert_sql = "INSERT INTO Login VALUES (%s, %s)"
     select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
@@ -49,11 +50,9 @@ def registerEmp():
     regid_no = cursor.fetchall()
 
     if reg_conf_pass != reg_pass:
-        print("Confirm password is wrong.")
-        return render_template('Register.html')
+        error = "Confirm password is wrong."
     elif len(regid_no) != 0:
-        print("This ID already exists. Please enter another one.")
-        return render_template('Register.html')
+        error = "This ID already exists. Please enter another one."
     else:
         try:
             cursor.execute(insert_sql, (reg_id, reg_pass))
@@ -63,6 +62,9 @@ def registerEmp():
 
         print("Successfully registered")
         return render_template("Login.html")
+
+    return render_template('Register.html', error=error)
+
 
 
 
