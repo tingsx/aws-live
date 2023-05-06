@@ -138,10 +138,10 @@ def GetEmp():
             return render_template('GetEmpOutput.html', id=emp_id, fname=emp_first, lname=emp_last, interest=emp_interest, location=emp_location, image_url=emp_image_url)
         else:
             print("Invalid ID")
-            return render_template('getemp.html')
+            return render_template('GetEmp.html')
     else:
         print("emp_id key not found in request.form")
-        return render_template('getemp.html')
+        return render_template('GetEmp.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
