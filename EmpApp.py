@@ -100,8 +100,8 @@ def login():
 def register():
     return render_template('Register.html')
 
-@app.route('/Home.html')
-def home():
+@app.route('/new_home.html')
+def new_home():
     return render_template('Home.html')
 
 
