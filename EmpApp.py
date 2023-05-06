@@ -61,7 +61,7 @@ def Login():
 def goLogin():
     return render_template('Login.html')
 
-
+from werkzeug.exceptions import BadRequestKeyError
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
     reg_id = request.form['reg_id']
