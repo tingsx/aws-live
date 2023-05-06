@@ -43,21 +43,25 @@ def Login():
         correct_pass = False
         cursor = db_conn.cursor()
 
-        if (cursor.execute(check_id, (reg_id)))>0:
+        if (cursor.execute(check_id, (reg_id))) > 0:
             correct_id = True
 
-        if (cursor.execute(check_pass, (reg_pass)))>0:
+        if (cursor.execute(check_pass, (reg_pass))) > 0:
             correct_pass = True
 
         if correct_id and correct_pass:
             print("Login successful")
             return render_template('Home.html')
         else:
-            print("Invalid user id or/and password!")
             error = "Invalid user id or/and password!"
             return render_template('Login.html', error=error)
+
     else:
         return render_template('Login.html')
+
+@app.route("/Login")
+def goLogin():
+    return render_template('Login.html')
 
 
 @app.route("/Login")
