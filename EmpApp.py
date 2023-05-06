@@ -32,6 +32,21 @@ def home():
 def about():
     return render_template('www.intellipaat.com')
 
+@app.route("/register", methods=['POST', 'GET'])
+def register():
+    if request.method == 'POST':
+        reg_id = request.form['reg_id']
+        reg_pass = request.form['reg_pass']
+        cursor = db_conn.cursor()
+
+        query = "INSERT INTO Login (reg_id, reg_pass) VALUES (%s, %s)"
+        cursor.execute(query, (reg_id, reg_pass))
+        db_conn.commit()
+
+        print("Registration successful")
+        return render_template('Login.html', success="Registration successful! Please login to continue.")
+    else:
+        return render_template('Register.html')
 
 @app.route("/Login", methods=['POST', 'GET'])
 def Login():
