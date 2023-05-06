@@ -140,7 +140,7 @@ def AddEmp():
 
 
 
-@app.route("/getemp", methods=['GET', 'POST'])
+@app.route("/GetEmp", methods=['GET', 'POST'])
 def GetEmp():
     emp_id = (request.form['emp_id']).lower()
     check_sql = "SELECT emp_id FROM employee WHERE emp_id=(%s)"
