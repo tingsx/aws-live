@@ -90,11 +90,11 @@ def registerEmp():
 
 @app.route("/addemp", methods=['GET', 'POST'])
 def AddEmp():
-    emp_id = request.form['emp_id']
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    pri_skill = request.form['pri_skill']
-    location = request.form['location']
+    emp_id = request.form.get("emp_id", False)
+    frist_name = request.form.get("first_name", False)
+    last_name = request.form.get("last_name", False)
+    pri_skill = request.form.get("pri_skill", False)
+    location = request.form.get("location", False)
     emp_image_file = request.files['emp_image_file']
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
