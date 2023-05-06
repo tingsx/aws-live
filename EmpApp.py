@@ -2,9 +2,9 @@ from flask import Flask, render_template, request
 from pymysql import connections
 import os
 import boto3
-import re
 from config import *
 from werkzeug.exceptions import BadRequestKeyError
+import re
 
 app = Flask(__name__)
 
