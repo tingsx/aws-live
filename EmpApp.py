@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from pymysql import connections
 import os
 import boto3
+import re
 from config import *
 from werkzeug.exceptions import BadRequestKeyError
 
@@ -54,35 +55,33 @@ def Login():
     
     return render_template('Login.html')
 
-
-
-from PIL import Image
-
+@app.route("/addemp", methods=['GET', 'POST'])
 def AddEmp():
-    emp_id = request.form.get("emp_id", False)
-    first_name = request.form.get("first_name", False)
-    last_name = request.form.get("last_name", False)
-    pri_skill = request.form.get("pri_skill", False)
-    location = request.form.get("location", False)
-    emp_request_file = request.files.get("emp_image_file")
+    emp_id = request.form['emp_id']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    pri_skill = request.form['pri_skill']
+    location = request.form['location']
+    emp_image_file = request.files['emp_image_file']
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
 
-    if emp_image_file == "":
+    if emp_image_file.filename == "":
         return "Please select a file"
 
     try:
+
         cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
-        # Upload image file in S3 #
+        # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
 
         try:
             print("Data inserted in MySQL RDS... uploading image to S3...")
-            s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image)
+            s3.Bucket(custombucket).put_object(Key=emp_image_file_name_in_s3, Body=emp_image_file)
             bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
             s3_location = (bucket_location['LocationConstraint'])
 
