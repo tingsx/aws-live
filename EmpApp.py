@@ -3,6 +3,7 @@ from pymysql import connections
 import os
 import boto3
 from config import *
+from werkzeug.exceptions import BadRequestKeyError
 
 app = Flask(__name__)
 
@@ -54,7 +55,6 @@ def Login():
     return render_template('Login.html')
 
 
-from werkzeug.exceptions import BadRequestKeyError
 
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
