@@ -2,34 +2,53 @@
 <html>
 <head>
 	<title>Home</title>
+	<style>
+		.home-button {
+			margin-top: 20px;
+			text-align: center;
+		}
+		
+		.form-button {
+			background-color: grey;
+			color: white;
+			font-size: 24px;
+			font-weight: bold;
+			padding: 20px 40px;
+			border-radius: 10px;
+			border: none;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+		
+		.form-button:hover {
+			background-color: #333;
+		}
+	</style>
 </head>
-<center>
-	<font color="black" size="4" style="font-family: avenir">
-
+<body bgcolor="beige">
+	<center>
 		<h1 style="color: navy">Home Page</h1>
-
-		<body bgcolor="beige">
-
-			<div class = "home-button">
-				<href = "/addemp">
-					<button class="form-button">Add Employee</button>
-				</a>
-			</div>
-			<div class="home-button">
-				<a href = "/getemp">
-					<button class="form-button">Get Employee Details</button>
-				</a>
-			</div>
-			<div class="home-button">
-				<a href = "/Attendance">
-					<button class="form-button">Attendanca</button>
-				</a>
-			</div>
-			<div class="home-button">
-				<a href = "/Login">
-					<button class="form-button">back</button>
-				</a>
-			</div>
+		<div class="home-button">
+			<a href="/addemp">
+				<button class="form-button">Add Employee</button>
+			</a>
 		</div>
-</center>
+		<div class="home-button">
+			<a href="/getemp">
+				<button class="form-button">Get Employee Details</button>
+			</a>
+		</div>
+		<div class="home-button">
+			<a href="/Attendance">
+				<button class="form-button">Attendance</button>
+			</a>
+		</div>
+		<div class="home-button">
+			<a href="/Login">
+				<button class="form-button">Back</button>
+			</a>
+		</div>
+	</center>
+</body>
 </html>
+
