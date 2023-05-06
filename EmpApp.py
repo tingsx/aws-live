@@ -181,6 +181,7 @@ def GetEmp():
         
         emp_location = re.sub('\W+','',str(cursor.fetchall()))
         
+        s3 = boto3.client('s3')
         emp_image_url = f"https://{tingshuxuan-bucket}.s3.amazonaws.com/{emp_image_key}"
 
 
