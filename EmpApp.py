@@ -33,33 +33,18 @@ def about():
 
 @app.route("/Login", methods=['POST', 'GET'])
 def Login():
-    reg_id = (request.form['reg_id']).lower()
+    reg_id = request.form['reg_id'].lower()
     reg_pass = request.form['reg_pass']
 
-    check_id = "SELECT COUNT(reg_id) FROM Login WHERE reg_id=(%s)"
-    check_pass = "SELECT COUNT(reg_pass) FROM Login WHERE reg_pass=(%s)"
-    correct_id = False
-    correct_pass = False
+    check_login = "SELECT COUNT(*) FROM Login WHERE reg_id=(%s) AND reg_pass=(%s)"
     cursor = db_conn.cursor()
 
-    if (cursor.execute(check_id, (reg_id)))>0:
-        correct_id = True
-        
-    if (cursor.execute(check_pass, (reg_pass)))>0:
-        correct_pass = True
-
-    if correct_id and correct_pass:
+    if cursor.execute(check_login, (reg_id, reg_pass)) > 0:
         print("Login successful")
         return render_template('Home.html')
     else:
         print("Invalid user id or/and password!")
-        correct_id = False
-        correct_pass = False
         return render_template('Login.html')
-    
-@app.route("/Login")
-def goLogin():
-    return render_template('Login.html')
 
 from werkzeug.exceptions import BadRequestKeyError
 
