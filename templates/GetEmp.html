@@ -1,29 +1,46 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Get Employee Information</title>
 </head>
-<center>
-	<font color="black" size="5" style="font-family: avenir">
-
-		<h1 style="color: DodgerBlue">Employee Information</h1>
-
-		<body bgcolor="lightgrey">
-
-			<form action="/fetchdata" autocomplete="on" method="POST">
-
-				<h2 style="color: grey">Enter Employee ID</h2>
-
-		  		Employee ID:<br> <input style="height:25px;font-size:14pt;" type="number" name="emp_id" autofocus size="40"><br><br>
-
-
-		  		<button type="submit" style="background: grey; height: 45px; width: 200px; color: white; size: 5; font:oblique;">FETCH INFO</button><br><br>
-
-		  		<button type="submit" formaction="http://3.134.115.108:80/" style="background: white	; height: 45px; width: 200px; color: black; size: 5; font:oblique;" method="GET">GO TO UPDATE DATABASE PAGE</button>
-
-			</form>
-
-		</body>
-	</font>
-</center>
+<body>
+	<h1>Get Employee Information</h1>
+	<form method="POST" action="{{ url_for('GetEmp') }}">
+		<label for="emp_id">Employee ID:</label>
+		<input type="text" id="emp_id" name="emp_id" required>
+		<input type="submit" value="Get Info">
+	</form>
+	{% if error %}
+		<p style="color:red;">Invalid Employee ID. Please try again.</p>
+	{% endif %}
+	{% if fname %}
+		<h2>Employee Information:</h2>
+		<table>
+			<tr>
+				<td>ID:</td>
+				<td>{{ id }}</td>
+			</tr>
+			<tr>
+				<td>First Name:</td>
+				<td>{{ fname }}</td>
+			</tr>
+			<tr>
+				<td>Last Name:</td>
+				<td>{{ lname }}</td>
+			</tr>
+			<tr>
+				<td>Primary Skill:</td>
+				<td>{{ interest }}</td>
+			</tr>
+			<tr>
+				<td>Location:</td>
+				<td>{{ location }}</td>
+			</tr>
+			<tr>
+				<td>Image URL:</td>
+				<td>{{ image_url }}</td>
+			</tr>
+		</table>
+	{% endif %}
+</body>
 </html>
