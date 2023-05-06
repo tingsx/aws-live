@@ -34,35 +34,33 @@ def about():
 
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
-    try:
+    error = None
+    if request.method == 'POST':
         reg_id = request.form['reg_id']
         reg_pass = request.form['reg_pass']
         reg_conf_pass = request.form['reg_conf_pass']
-    except BadRequestKeyError:
-        print("Bad Request")
-        return render_template('Register.html')
 
-    insert_sql = "INSERT INTO Login VALUES (%s, %s)"
-    select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(select_sql, (reg_id,))
-    regid_no = cursor.fetchall()
+        if reg_conf_pass != reg_pass:
+            error = "Confirm password is wrong."
+        else:
+            cursor = db_conn.cursor()
+            select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
+            cursor.execute(select_sql, (reg_id,))
+            regid_no = cursor.fetchall()
+            if len(regid_no) != 0:
+                error = "This ID already exists. Please enter another one."
+            else:
+                insert_sql = "INSERT INTO Login VALUES (%s, %s)"
+                try:
+                    cursor.execute(insert_sql, (reg_id, reg_pass))
+                    db_conn.commit()
+                except Exception as e:
+                    error = "An error occurred while registering: " + str(e)
+                finally:
+                    cursor.close()
+                    return redirect(url_for('login'))
+    return render_template('Register.html', error=error)
 
-    if reg_conf_pass != reg_pass:
-        print("Confirm password is wrong.")
-        return render_template('Register.html')
-    elif len(regid_no) != 0:
-        print("This ID already exists. Please enter another one.")
-        return render_template('Register.html')
-    else:
-        try:
-            cursor.execute(insert_sql, (reg_id, reg_pass))
-            db_conn.commit()
-        finally:
-            cursor.close()
-
-        print("Successfully registered")
-        return render_template("Login.html")
 
 @app.route("/Login", methods=['POST', 'GET'])
 def Login():
