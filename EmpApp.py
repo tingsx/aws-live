@@ -32,39 +32,21 @@ def home():
 def about():
     return render_template('www.intellipaat.com')
 
-@app.route("/Register", methods=['GET', 'POST'])
-def registerEmp():
-    error = None
+@app.route("/register", methods=['POST', 'GET'])
+def register():
     if request.method == 'POST':
         reg_id = request.form['reg_id']
         reg_pass = request.form['reg_pass']
-        reg_conf_pass = request.form['reg_conf_pass']
+        cursor = db_conn.cursor()
 
-        if reg_id == '' or reg_pass == '' or reg_conf_pass == '':
-            error = 'Please fill out all fields.'
-        elif reg_conf_pass != reg_pass:
-            error = 'Passwords do not match.'
-        else:
-            insert_sql = "INSERT INTO Login VALUES (%s, %s)"
-            select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
-            cursor = db_conn.cursor()
-            cursor.execute(select_sql, (reg_id,))
-            regid_no = cursor.fetchall()
+        query = "INSERT INTO Login (reg_id, reg_pass) VALUES (%s, %s)"
+        cursor.execute(query, (reg_id, reg_pass))
+        db_conn.commit()
 
-            if len(regid_no) != 0:
-                error = 'This ID already exists. Please enter another one.'
-            else:
-                try:
-                    cursor.execute(insert_sql, (reg_id, reg_pass))
-                    db_conn.commit()
-                finally:
-                    cursor.close()
-
-                print("Successfully registered")
-                return render_template("Login.html")
-
-    return render_template('Register.html', error=error)
-
+        print("Registration successful")
+        return render_template('Login.html', success="Registration successful! Please login to continue.")
+    else:
+        return render_template('Register.html')
 
 
 @app.route("/Login", methods=['POST', 'GET'])
