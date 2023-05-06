@@ -182,9 +182,9 @@ def GetEmp():
         else:
             print("Invalid ID")
             return render_template('GetEmp.html')
-  else:
-        error = "Please enter an employee ID."
-        return render_template('GetEmp.html', error=error)
+else:
+    error = "Please enter an employee ID."
+    return render_template('GetEmp.html', error=error)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
