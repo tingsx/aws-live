@@ -96,7 +96,7 @@ def registerEmp():
         return render_template("Login.html")
 
 
-@app.route("/addemp", methods=['POST'])
+@app.route("/AddEmp", methods=['POST'])
 def AddEmp():
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
