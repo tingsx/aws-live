@@ -34,36 +34,45 @@ def about():
 
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
-    error = None
-    try:
+    if request.method == 'POST':
         reg_id = request.form['reg_id']
         reg_pass = request.form['reg_pass']
         reg_conf_pass = request.form['reg_conf_pass']
-    except BadRequestKeyError:
-        print("Bad Request")
-        return render_template('Register.html', error="Bad Request")
 
-    insert_sql = "INSERT INTO Login VALUES (%s, %s)"
-    select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(select_sql, (reg_id,))
-    regid_no = cursor.fetchall()
+        # Client-side validation
+        if not reg_id or not reg_pass or not reg_conf_pass:
+            error = "Please fill in all fields."
+            return render_template('Register.html', error=error)
+        elif reg_pass != reg_conf_pass:
+            error = "Passwords do not match."
+            return render_template('Register.html', error=error)
 
-    if reg_conf_pass != reg_pass:
-        error = "Confirm password is wrong."
-    elif len(regid_no) != 0:
-        error = "This ID already exists. Please enter another one."
-    else:
-        try:
-            cursor.execute(insert_sql, (reg_id, reg_pass))
-            db_conn.commit()
-        finally:
-            cursor.close()
+        # Server-side validation
+        select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
+        cursor = db_conn.cursor()
+        cursor.execute(select_sql, (reg_id,))
+        regid_no = cursor.fetchall()
 
-        print("Successfully registered")
-        return render_template("Login.html")
+        if len(regid_no) != 0:
+            error = "This ID already exists. Please enter another one."
+            return render_template('Register.html', error=error)
+        else:
+            insert_sql = "INSERT INTO Login VALUES (%s, %s)"
+            try:
+                cursor.execute(insert_sql, (reg_id, reg_pass))
+                db_conn.commit()
+            except Exception as e:
+                db_conn.rollback()
+                error = "An error occurred. Please try again later."
+                print("Error inserting data into database:", e)
+                return render_template('Register.html', error=error)
+            finally:
+                cursor.close()
 
-    return render_template('Register.html', error=error)
+            success_msg = "Successfully registered"
+            return render_template("Login.html", success_msg=success_msg)
+
+    return render_template('Register.html', error=None)
 
 
 
