@@ -95,7 +95,12 @@ def AddEmp():
     last_name = request.form.get("last_name", False)
     pri_skill = request.form.get("pri_skill", False)
     location = request.form.get("location", False)
-    emp_request_file = request.files['emp_image_file']
+    emp_request_file = request.files.get("emp_image_file")
+    if emp_request_file:
+        pass
+    else:
+        pass
+
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
