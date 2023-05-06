@@ -1,6 +1,6 @@
 ycustomhost = "ting-employee.cpxrtodkrhyv.us-east-1.rds.amazonaws.com"
 customuser = "aws_user"
-custompass = "Bait3273"
+custompass = "12345678"
 customdb = "employee"
 custombucket = "tingshuxuan-bucket"
 customregion = "us-east-1"
