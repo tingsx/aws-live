@@ -95,15 +95,8 @@ def AddEmp():
     last_name = request.form.get("last_name", False)
     pri_skill = request.form.get("pri_skill", False)
     location = request.form.get("location", False)
-    emp_request_file = request.files.get("emp_image_file")
-
-    if emp_request_file:
-        emp_image_file = emp_request_file.filename
-        # do something with emp_image_file
-    else:
-        return "Error: No emp_image_file found in the request"
-
-
+    #emp_request_file = request.files.get("emp_image_file")
+    img = Image.open(request.files['emp_image_file'].stream)
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
