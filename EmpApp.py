@@ -109,35 +109,39 @@ def AddEmp():
 
 
 
-@app.route("/getemp", methods=['GET', 'POST'])
+@app.route("/GetEmp", methods=['GET', 'POST'])
 def GetEmp():
-    emp_id = (request.form['emp_id']).lower()
-    check_sql = "SELECT emp_id FROM employee WHERE emp_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(check_sql, (emp_id))
-    emp_id = re.sub('\W+','',str(cursor.fetchall()))
-    check_sql = "SELECT first_name FROM employee WHERE emp_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(check_sql, (emp_id))
-    emp_first = re.sub('\W+','',str(cursor.fetchall()))
-    check_sql = "SELECT last_name FROM employee WHERE emp_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(check_sql, (emp_id))
-    emp_last = re.sub('\W+','',str(cursor.fetchall()))
-    check_sql = "SELECT pri_skill FROM employee WHERE emp_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(check_sql, (emp_id))
-    emp_interest = re.sub('\W+','',str(cursor.fetchall()))
-    check_sql = "SELECT location FROM employee WHERE emp_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(check_sql, (emp_id))
-    emp_location = re.sub('\W+','',str(cursor.fetchall()))
-    emp_image_url = re.sub('\W+','',str(cursor.fetchall()))
-    if str(emp_first) != "":
-        return render_template('GetEmpOutput.html', id=emp_id, fname=emp_first, lname=emp_last, interest=emp_interest, location=emp_location, image_url=emp_image_url)
+    if 'emp_id' in request.form:
+        emp_id = (request.form['emp_id']).lower()
+        check_sql = "SELECT emp_id FROM employee WHERE emp_id=(%s)"
+        cursor = db_conn.cursor()
+        cursor.execute(check_sql, (emp_id,))
+        emp_id = re.sub('\W+','',str(cursor.fetchall()))
+        check_sql = "SELECT first_name FROM employee WHERE emp_id=(%s)"
+        cursor = db_conn.cursor()
+        cursor.execute(check_sql, (emp_id,))
+        emp_first = re.sub('\W+','',str(cursor.fetchall()))
+        check_sql = "SELECT last_name FROM employee WHERE emp_id=(%s)"
+        cursor = db_conn.cursor()
+        cursor.execute(check_sql, (emp_id,))
+        emp_last = re.sub('\W+','',str(cursor.fetchall()))
+        check_sql = "SELECT pri_skill FROM employee WHERE emp_id=(%s)"
+        cursor = db_conn.cursor()
+        cursor.execute(check_sql, (emp_id,))
+        emp_interest = re.sub('\W+','',str(cursor.fetchall()))
+        check_sql = "SELECT location FROM employee WHERE emp_id=(%s)"
+        cursor = db_conn.cursor()
+        cursor.execute(check_sql, (emp_id,))
+        emp_location = re.sub('\W+','',str(cursor.fetchall()))
+        emp_image_url = re.sub('\W+','',str(cursor.fetchall()))
+        if str(emp_first) != "":
+            return render_template('GetEmpOutput.html', id=emp_id, fname=emp_first, lname=emp_last, interest=emp_interest, location=emp_location, image_url=emp_image_url)
+        else:
+            print("Invalid ID")
+            return render_template('GetEmp.html')
     else:
-        print("Invalid ID")
-        return renderrender_template('GetEmp.html')
+        print("emp_id key not found in request.form")
+        return render_template('GetEmp.html')
 
 
 if __name__ == '__main__':
