@@ -4,7 +4,6 @@ import os
 import boto3
 from config import *
 from werkzeug.exceptions import BadRequestKeyError
-from PIL import Image
 
 app = Flask(__name__)
 
@@ -66,11 +65,6 @@ def AddEmp():
     pri_skill = request.form.get("pri_skill", False)
     location = request.form.get("location", False)
     emp_request_file = request.files.get("emp_image_file")
-    if emp_request_file:
-        emp_image_file = emp_request_file.filename
-        emp_image = Image.open(emp_request_file.stream)
-    else:
-        return "No emp_image_file found in the request"
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
