@@ -35,9 +35,9 @@ def about():
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
     if request.method == 'POST':
-        reg_id = request.form['reg_id']
-        reg_pass = request.form['reg_pass']
-        reg_conf_pass = request.form['reg_conf_pass']
+        reg_id = request.form.get('reg_id', '')
+        reg_pass = request.form.get('reg_pass', '')
+        reg_conf_pass = request.form.get('reg_conf_pass', '')
 
         # Client-side validation
         if not reg_id or not reg_pass or not reg_conf_pass:
@@ -69,11 +69,10 @@ def registerEmp():
             finally:
                 cursor.close()
 
-            success_msg = "Successfully registered"
-            return render_template("Login.html", success_msg=success_msg)
+            print("Successfully registered")
+            return render_template("Login.html")
 
     return render_template('Register.html', error=None)
-
 
 
 
