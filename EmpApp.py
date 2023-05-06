@@ -163,20 +163,28 @@ def GetEmp():
         check_sql = "SELECT first_name FROM employee WHERE emp_id=(%s)"
         cursor = db_conn.cursor()
         cursor.execute(check_sql, (emp_id,))
+        
         emp_first = re.sub('\W+','',str(cursor.fetchall()))
         check_sql = "SELECT last_name FROM employee WHERE emp_id=(%s)"
         cursor = db_conn.cursor()
         cursor.execute(check_sql, (emp_id,))
+        
         emp_last = re.sub('\W+','',str(cursor.fetchall()))
         check_sql = "SELECT pri_skill FROM employee WHERE emp_id=(%s)"
         cursor = db_conn.cursor()
         cursor.execute(check_sql, (emp_id,))
+        
         emp_interest = re.sub('\W+','',str(cursor.fetchall()))
         check_sql = "SELECT location FROM employee WHERE emp_id=(%s)"
         cursor = db_conn.cursor()
         cursor.execute(check_sql, (emp_id,))
+        
         emp_location = re.sub('\W+','',str(cursor.fetchall()))
-        emp_image_url = re.sub('\W+','',str(cursor.fetchall()))
+        
+        emp_image_url = f"https://{tingshuxuan-bucket}.s3.amazonaws.com/{emp_image_key}"
+
+
+        
         if str(emp_first) != "":
             return render_template('GetEmpOutput.html', id=emp_id, fname=emp_first, lname=emp_last, interest=emp_interest, location=emp_location, image_url=emp_image_url)
         else:
