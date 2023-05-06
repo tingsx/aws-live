@@ -185,6 +185,7 @@ def GetEmp():
         emp_image_url = f"https://{tingshuxuan-bucket}.s3.amazonaws.com/{emp_image_key}"
 
 
+
         
         if str(emp_first) != "":
             return render_template('GetEmpOutput.html', id=emp_id, fname=emp_first, lname=emp_last, interest=emp_interest, location=emp_location, image_url=emp_image_url)
