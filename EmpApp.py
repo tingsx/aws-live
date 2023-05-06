@@ -97,9 +97,13 @@ def AddEmp():
     location = request.form.get("location", False)
     emp_request_file = request.files.get("emp_image_file")
     if emp_request_file:
-        pass
+        # Retrieve the filename from the uploaded file
+        emp_image_file = emp_request_file.filename
+        # do something with emp_image_file
     else:
-        pass
+        # handle the case where emp_image_file is not found
+        # For example, you could return an error message to the user
+        return "Error: No emp_image_file found in the request"
 
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
