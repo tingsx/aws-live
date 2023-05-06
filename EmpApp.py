@@ -182,7 +182,7 @@ def GetEmp():
         else:
             print("Invalid ID")
             return render_template('GetEmp.html')
-   else:
+  else:
         error = "Please enter an employee ID."
         return render_template('GetEmp.html', error=error)
 
