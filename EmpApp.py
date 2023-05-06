@@ -89,33 +89,27 @@ def registerEmp():
         return render_template("Login.html")
 
 
-@app.route("/AddEmp", methods=['POST'])
+@app.route("/addemp", methods=['POST'])
 def AddEmp():
-    if request.method == 'POST':
-        emp_id = request.form['emp_id']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        pri_skill = request.form['pri_skill']
-        location = request.form['location']
-        
-        if 'emp_image_file' not in request.files or not request.files['emp_image_file'].filename:
-            return "Please select a file"
-        
-        emp_image_file = request.files['emp_image_file']
-
-        # rest of the code
-    else:
-        return "Invalid request method"
+    emp_id = request.form['emp_id']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    pri_skill = request.form['pri_skill']
+    location = request.form['location']
+    emp_image_file = request.files['emp_image_file']
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
+
+    if emp_image_file.filename == "":
+        return "Please select a file"
 
     try:
 
         cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
-        # Upload image file to S3 #
+        # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
 
@@ -143,7 +137,6 @@ def AddEmp():
 
     print("all modification done...")
     return render_template('AddEmpOutput.html', name=emp_name)
-
 
 
 
