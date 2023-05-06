@@ -143,6 +143,5 @@ def GetEmp():
         print("emp_id key not found in request.form")
         return render_template('GetEmp.html')
 
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
