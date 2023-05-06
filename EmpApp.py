@@ -48,7 +48,8 @@ def Login():
             return render_template('Home.html')
         else:
             print("Invalid user id or/and password!")
-            return render_template('Login.html')
+            error = "Invalid user id or/and password!"
+            return render_template('Login.html', error=error)
     
     return render_template('Login.html')
 
