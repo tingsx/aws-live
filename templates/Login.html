@@ -7,19 +7,14 @@
     <center>
         <font color="black" size="4" style="font-family: avenir">
             <h1 style="color: navy">Login Page</h1>
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
             <form action="/Login" autocomplete="on" method="POST" enctype="multipart/form-data">
                 ID:<br>
-                <input style="height:25px;font-size:14pt;color:grey;" type="text" name="reg_id" required><br>
-                {% if error_id %}
-                    <span style="color: red;">Invalid user ID</span><br>
-                {% endif %}
-                <br>
+                <input style="height:25px;font-size:14pt;color:grey;" type="text" name="reg_id"><br><br>
                 Password:<br>
-                <input style="height:25px;font-size:14pt;color:grey;" type="password" name="reg_pass" required><br>
-                {% if error_pass %}
-                    <span style="color: red;">Invalid password</span><br>
-                {% endif %}
-                <br>
+                <input style="height:25px;font-size:14pt;color:grey;" type="text" name="reg_pass"><br><br>
                 <button type="submit" style="background: grey; height: 45px; width: 200px; color: white; size: 5; font:oblique;">LOGIN</button>
             </form>
             <br>
