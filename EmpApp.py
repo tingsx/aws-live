@@ -62,39 +62,35 @@ def goLogin():
     return render_template('Login.html')
 
 
-from werkzeug.exceptions import BadRequestKeyError
-
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
-    try:
-        reg_id = request.form['reg_id']
-        reg_pass = request.form['reg_pass']
-        reg_conf_pass = request.form['reg_conf_pass']
-    except BadRequestKeyError:
-        print("Bad Request")
-        return render_template('Register.html')
-
+    reg_id = request.form['reg_id']
+    reg_pass = request.form['reg_pass']
+    reg_conf_pass = request.form['reg_conf_pass']
+    
     insert_sql = "INSERT INTO Login VALUES (%s, %s)"
     select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
     cursor = db_conn.cursor()
     cursor.execute(select_sql, (reg_id,))
-    regid_no = cursor.fetchall()
-
-    if reg_conf_pass != reg_pass:
+    regid_no=cursor.fetchall()
+    
+    if reg_conf_pass!=reg_pass:
         print("Confirm password is wrong.")
         return render_template('Register.html')
-    elif len(regid_no) != 0:
-        print("This ID already exists. Please enter another one.")
+    elif regid_no:
+        print("This ID already existed. Please enter another one.")
         return render_template('Register.html')
     else:
         try:
             cursor.execute(insert_sql, (reg_id, reg_pass))
             db_conn.commit()
+            
         finally:
             cursor.close()
-
+            
         print("Successfully registered")
         return render_template("Login.html")
+
 
 
 
