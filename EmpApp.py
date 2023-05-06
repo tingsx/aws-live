@@ -153,6 +153,7 @@ def AddEmp():
     return render_template('AddEmpOutput.html', name=emp_name)
 
 
+
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
     emp_id = (request.form['emp_id']).lower()
