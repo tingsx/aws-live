@@ -181,11 +181,8 @@ def GetEmp():
         
         emp_location = re.sub('\W+','',str(cursor.fetchall()))
         
-        s3 = boto3.client('s3')
-        bucket_name = "tingshuxuan-bucket"
-        emp_image_url = f"https://{bucket_name}.s3.amazonaws.com/{emp_image_key}"
+        emp_image_url = re.sub('\W+','',str(cursor.fetchall()))
 
-        
         if str(emp_first) != "":
             return render_template('GetEmpOutput.html', id=emp_id, fname=emp_first, lname=emp_last, interest=emp_interest, location=emp_location, image_url=emp_image_url)
         else:
