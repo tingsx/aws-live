@@ -91,12 +91,17 @@ def registerEmp():
 
 @app.route("/AddEmp", methods=['POST'])
 def AddEmp():
-    emp_id = request.form['emp_id']
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    pri_skill = request.form['pri_skill']
-    location = request.form['location']
-    emp_image_file = request.files['emp_image_file']
+    if request.method == 'POST':
+        emp_id = request.form['emp_id']
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        pri_skill = request.form['pri_skill']
+        location = request.form['location']
+        emp_image_file = request.files['emp_image_file']
+        
+        # rest of the code
+    else:
+        return "Invalid request method"
 
     insert_sql = "INSERT INTO employee VALUES (%s, %s, %s, %s, %s)"
     cursor = db_conn.cursor()
