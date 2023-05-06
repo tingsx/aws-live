@@ -96,11 +96,15 @@ def registerEmp():
         return render_template("Login.html")
 
 
-
-
-
 @app.route("/AddEmp", methods=['POST'])
 def AddEmp():
+    # Check if all required fields are present
+    required_fields = ['emp_id', 'first_name', 'last_name', 'pri_skill', 'location', 'emp_image_file']
+    for field in required_fields:
+        if field not in request.form and field not in request.files:
+            return f"Missing field: {field}"
+
+    # Retrieve form data
     emp_id = request.form['emp_id']
     first_name = request.form['first_name']
     last_name = request.form['last_name']
@@ -115,10 +119,10 @@ def AddEmp():
         return "Please select a file"
 
     try:
-
         cursor.execute(insert_sql, (emp_id, first_name, last_name, pri_skill, location))
         db_conn.commit()
         emp_name = "" + first_name + " " + last_name
+
         # Uplaod image file in S3 #
         emp_image_file_name_in_s3 = "emp-id-" + str(emp_id) + "_image_file"
         s3 = boto3.resource('s3')
@@ -147,6 +151,7 @@ def AddEmp():
 
     print("all modification done...")
     return render_template('AddEmpOutput.html', name=emp_name)
+
 
 @app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
