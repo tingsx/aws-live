@@ -109,7 +109,7 @@ def AddEmp():
 
 
 
-@app.route("/GetEmp", methods=['GET', 'POST'])
+@app.route("/getemp", methods=['GET', 'POST'])
 def GetEmp():
     if 'emp_id' in request.form:
         emp_id = (request.form['emp_id']).lower()
@@ -138,10 +138,10 @@ def GetEmp():
             return render_template('GetEmpOutput.html', id=emp_id, fname=emp_first, lname=emp_last, interest=emp_interest, location=emp_location, image_url=emp_image_url)
         else:
             print("Invalid ID")
-            return render_template('GetEmp.html')
+            return render_template('getemp.html')
     else:
         print("emp_id key not found in request.form")
-        return render_template('GetEmp.html')
+        return render_template('getemp.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
