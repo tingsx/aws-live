@@ -64,32 +64,41 @@ def goLogin():
 
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
-    reg_id = (request.form['reg_id'])
-    reg_pass = request.form['reg_pass']
-    reg_conf_pass = request.form['reg_conf_pass']
-    
-    insert_sql = "INSERT INTO Login VALUES (%s, %s)"
-    select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
-    cursor = db_conn.cursor()
-    cursor.execute(select_sql, (reg_id))
-    regid_no=cursor.fetchall()
-    
-    if reg_conf_pass!=reg_pass:
-        print("Confirm password is wrong.")
-        return render_template('Register.html')
-    elif str(regid_no) != "()":
-        print("This ID already existed. Please enter another one.")
-        return render_template('Register.html')
-    else:
+    if request.method == 'POST':
         try:
-            cursor.execute(insert_sql, (reg_id, reg_pass))
-            db.conn.commit()
+            reg_id = (request.form['reg_id'])
+            reg_pass = request.form['reg_pass']
+            reg_conf_pass = request.form['reg_conf_pass']
             
-        finally:
-            cursor.close()
+            insert_sql = "INSERT INTO Login VALUES (%s, %s)"
+            select_sql = "SELECT * FROM Login WHERE reg_id=(%s)"
+            cursor = db_conn.cursor()
+            cursor.execute(select_sql, (reg_id,))
+            regid_no = cursor.fetchall()
             
-        print("Successfully registered")
-        return render_template("Login.html")
+            if reg_conf_pass != reg_pass:
+                print("Confirm password is wrong.")
+                return render_template('Register.html')
+            elif str(regid_no) != "()":
+                print("This ID already existed. Please enter another one.")
+                return render_template('Register.html')
+            else:
+                try:
+                    cursor.execute(insert_sql, (reg_id, reg_pass))
+                    db_conn.commit()
+                    
+                finally:
+                    cursor.close()
+                    
+                print("Successfully registered")
+                return render_template("Login.html")
+            
+        except BadRequestKeyError:
+            print("KeyError: 'reg_id' - Please fill in all required fields.")
+            return render_template('Register.html')
+            
+    else:
+        return render_template('Register.html')
 
 
 @app.route("/addemp", methods=['POST'])
