@@ -12,25 +12,15 @@
 			return dateTimeString;
 		}
 		
-		function checkIn() {
+		function setCheckInTime() {
 			var checkInDT = dateAndTime();
-			localStorage.setItem("checkInTime", checkInDT);
 			var checkInElement = document.getElementById("checkin-datetime");
 			checkInElement.value = checkInDT;
-			
 		}
 		
-		$(document).ready(function() {
-			$("#checkin-btn").click(function() {
-				$.post("/checkin", function(data, status) {
-					if (status === "success") {
-						alert("Check-in time stored successfully!");
-					} else {
-						alert("Failed to store check-in time.");
-					}
-				});
-			});
-		});
+		window.onload = function() {
+			setCheckInTime();
+		};
 		
 	</script>
 	</head>
