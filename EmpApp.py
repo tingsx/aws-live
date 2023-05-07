@@ -219,6 +219,28 @@ def Attendance():
     else:
         return render_template('Attendance.html')
 
+@app.route("/CheckIn", methods=['POST', 'GET'])
+def CheckIn():
+    emp_id = request.form['emp_id']
+    update_statement = "UPDATE employee SET check_in = (%(check_in)s) WHERE emp_id = %(emp_id)s"
+    cursor = db_conn.cursor()
+    
+    CheckInTime = datetime.now()
+    formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
+    print("Check In Time: {}", formatted_login)
+                                           
+    try:
+        cursor.execute(update_statement, {'check_in' : formatted_login, 'emp_id':int(emp_id)})
+        db_conn.commit()
+        print("Data updated")
+    exception Exception as e:
+        return str(e)
+    finally:
+        cursor.close()
+        
+    return render_template("/CheckIn", date = datetime.now(), CheckInTime = formatted_login)
+                             
+                                           
 
 
     
