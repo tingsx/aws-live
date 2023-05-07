@@ -194,7 +194,28 @@ def GetEmp():
     else:
         error = "Please enter an employee ID."
         return render_template('GetEmp.html', error=error)
-
+    
+@app.route("/Attendance", methods=['POST', 'GET'])
+def Attendance():
+    if request.method == 'POST':
+        if 'emp_id' in request.form:
+            emp_id = request.form['emp_id']
+            check_sql = "SELECT * FROM employee WHERE emp_id = %s"
+            cursor = db_conn.cursor()
+            cursor.execute(check_sql, (emp_id,))
+            employee = cursor.fetchone()
+            
+            if employee is not None:
+                #employee exists in database
+                print("Welcome, employee", emp_id)
+            else:
+                error = "Employee ID not found."
+                return render_template("Attendance.html", error=error)
+        else:
+            error = "Please enter an employee ID."
+            return render_template("Attendance.html", error=error)
+    else:
+        return render_template("Attendance.html")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
