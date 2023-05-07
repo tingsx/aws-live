@@ -231,12 +231,10 @@ def CheckIn():
             
             insert_sql = "INSERT INTO Attendance (emp_id, check_in) VALUES (%s, %s)"
             cursor = db_conn.cursor()
-            cursor.execute(insert_sql, (check_in)
-            
-                                     
-            
-            
-        
+            cursor.execute(insert_sql, (check_in,))
+            db_conn.commit()
+                           
+ 
             return render_template("/CheckIn", CheckInTime = formatted_login)
         else:
             return render_template('CheckIn.html')            
