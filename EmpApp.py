@@ -203,12 +203,16 @@ def Attendance():
             check_sql = "SELECT emp_id FROM employee WHERE emp_id = %s"
             cursor = db_conn.cursor()
             cursor.execute(check_sql, (emp_id,))
-            employee = cursor.fetchone()
+            cursor.execute(check_sql, (emp_id,))
+            emp_id = re.sub('\W+','',str(cursor.fetchall()))
             
             if employee is None:
                 error = "Employee ID does not exist."
                 return render_template('Attendance.html', error=error)
             else:
+                insert_sql = "INSERT INTO Attendance (emp_id) VALUES ($s)"
+                cursor.execute(insert_sql, (emp_id,))
+                db_conn.commit()
                 return render_template('CheckIn.html', emp_id=emp_id)
     else:
         return render_template('Attendance.html')
@@ -216,7 +220,7 @@ def Attendance():
 @app.route("/CheckIn", methods=['POST', 'GET'])
 def CheckIn():
     check_in = request.form['check_in']
-    insert_sql = "INSERT INTO employee VALUES (%s)"
+    insert_sql = "INSERT INTO Attendance VALUES (%s)"
     cursor = db_conn.cursor()
     
     
