@@ -231,7 +231,7 @@ def CheckIn():
             CheckInTime = datetime.now()
             formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')                          
             try:
-                cursor.execute(update_statement, {'check_in' : formatted_login, 'emp_id':int(emp_id)})
+                cursor.execute(insert_sql, (emp_id, formatted_login))
                 db_conn.commit()
                 print("Data updated")
             except Exception as e:
@@ -239,7 +239,7 @@ def CheckIn():
             finally:
                 cursor.close()
         
-            return render_template("/CheckIn", date = CheckInTime, CheckInTime = formatted_login)
+            return render_template("/CheckIn", CheckInTime = formatted_login)
         else:
             return render_template('CheckIn.html')            
     else:
