@@ -199,7 +199,7 @@ def GetEmp():
 def Attendance():
     if request.method == 'POST':
         if 'emp_id' in request.form:
-            emp_id = (request.form.get['emp_id']).lower()        
+            emp_id = request.form['emp_id'].lower()        
             check_sql = "SELECT emp_id FROM employee WHERE emp_id = %s"
             cursor = db_conn.cursor()
             cursor.execute(check_sql, (emp_id,))
@@ -210,9 +210,6 @@ def Attendance():
                 error = "Employee ID does not exist."
                 return render_template('Attendance.html', error=error)
             else:
-                insert_sql = "INSERT INTO Attendance (emp_id) VALUES ($s)"
-                cursor.execute(insert_sql, (emp_id,))
-                db_conn.commit()
                 return render_template('CheckIn.html', emp_id=emp_id)
     else:
         return render_template('Attendance.html')
