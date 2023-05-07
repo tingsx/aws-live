@@ -22,13 +22,15 @@
 		<center>
 		<h1 style="color: navy">Employee's Attendance</h1>
 		<body bgcolor="beige">
-			<form method="POST" action="/validate_emp_id">
-			{% if error %}
-        	        <p style="color: red">{{ error }}</p>
-     		        {% endif %}
-			ID:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" id="emp_id" name="emp_id"><br><br>
-				<button type="submit">Submit</button>
-			</form>
+		<form method="POST" action="{{ url_for('Attendance') }}">
+			<label for="emp_id">Employee ID: </label>
+			<input type="text" id="emp_id" name="emp_id" required>
+			<input type="submit" value="Verify">
+		</form>
+		{% if error %}
+			<p>Invalid Employee ID. Please try again.</p>
+		{% endif %}
+		{% if fname %}
 			
 			<form action="/CheckIn" autocomplete="on" method="POST" enctype="multipart/form-date">
 			<button type="submit">Check In</button>
