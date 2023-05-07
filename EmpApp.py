@@ -223,7 +223,7 @@ def Attendance():
 @app.route("/CheckIn", methods=['POST', 'GET'])
 def CheckIn():
     if request.method == 'POST':
-    emp_id = request.form['emp_id'].lower()
+    emp_id = request.form['emp_id']
     insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
     cursor = db_conn.cursor()
     
