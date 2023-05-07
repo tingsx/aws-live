@@ -243,9 +243,9 @@ def CheckIn():
         
             return render_template("/CheckIn", date = datetime.now(), CheckInTime = formatted_login)
         else:
-            return render_template("/Attendance")
+            return render_template('Attendance.html')
     else:
-        return render_template("/Attendance")
+        return render_template('Attendance.html')
                              
                                            
 
