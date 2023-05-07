@@ -217,5 +217,25 @@ def Attendance():
     else:
         return render_template("Attendance.html")
 
+@app.route('/CheckIn', methods=['POST'])
+def checkin():
+    emp_id = request.form['emp_id']
+    update_statement = "UPDATE employee SET check_in = (%(check_in)s) WHERE emp_id = %(emp_id)s"
+    cursor = db_conn.cursor()
+    
+    CheckInTime = datetime.now()
+    print("Check In Time: {}". CheckInTime)
+    
+    try:
+        cursor.execute(update_statement, {'check_in' : CheckInTime, 'emp_id':int(emp_id)})
+        db_conn.commit()
+        print("Data updated")
+    except Exception as e:
+        return str(e)
+    finally:
+        cursor.close()
+    
+    return render_template(date = datetime.now())
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
