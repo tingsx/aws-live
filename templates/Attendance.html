@@ -44,7 +44,7 @@
 			<p>Invalid Employee ID. Please try again.</p>
 		{% endif %}
 		
-		{% if fname %}
+		{% if emp_id_verified %}
 			<form action="/CheckIn" autocomplete="on" method="POST" enctype="multipart/form-date">
 			<button type="submit">Check In</button>
 			<br><br>
