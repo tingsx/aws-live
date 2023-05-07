@@ -247,6 +247,28 @@ def CheckIn():
                              
 @app.route("/CheckOut", methods=['POST', 'GET'])
 def CheckOut():
+    if request.method == 'POST':
+        if 'emp_id' in request.form:
+            emp_id = request.form['emp_id'].lower()
+            insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
+            cursor = db_conn.cursor()
+            
+            CheckOutTime = datetime.now()
+            formatted_login = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')                          
+            try:
+                cursor.execute(update_statement, {'check_in' : formatted_login, 'emp_id':int(emp_id)})
+                db_conn.commit()
+                print("Data updated")
+            except Exception as e:
+                return str(e)
+            finally:
+                cursor.close()
+        
+            return render_template("/CheckOut", date = CheckOutTime, CheckOutTime = formatted_login)
+        else:
+            return render_template('CheckOut.html')            
+    else:
+        return render_template('CheckOut.html')
 
 
     
