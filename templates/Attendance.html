@@ -19,23 +19,27 @@
 		
 	</script>
 	</head>
+		<center>
 		<h1 style="color: navy">Employee's Attendance</h1>
 		<body bgcolor="beige">
+			{% if error %}
+        	        <p style="color: red">{{ error }}</p>
+     		        {% endif %}
 			ID:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="emp_id"><br><br>
 			
-			<form action="/CheckIn" method="GET">
-			<input type="hidden" name="check_in" id="check_in" value="">
+			<form action="/CheckIn" autocomplete="on" method="POST" enctype="multipart/form-date">
 			<button type="submit">Check In</button>
 			<br><br>
 			</form>
 			
 			<form action="/CheckOut" autocomplete="on" method = "POST" enctype="multipart/form-data">
-			<button type="submit">Check Out</button>	
+				<button type="submit"><u>Check Out</u></button>	
 			<br><br>
 			</form>
-			<form action="/Home" autocomplete="on" method = "POST" enctype="multipart/form-data">
-			<button type="submit">Back to Home</button>		
 			
+			<form action="/Home" autocomplete="on" method = "POST" enctype="multipart/form-data">
+				<button type="submit"><u>Back to Home</u></button>		
+				</center>
 	</body>
 	</font>
 </center>
