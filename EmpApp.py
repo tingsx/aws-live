@@ -422,59 +422,65 @@ def CheckIn():
     if request.method == 'POST':
         if 'emp_id' in request.form:
             emp_id = request.form['emp_id'].lower()
-            insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
+            insert_sql = "INSERT INTO Attendance (emp_id, check_in) VALUES (%(emp_id)s, %(check_in)s)"
             cursor = db_conn.cursor()
-            cursor.execute(insert_sql, (emp_id,))
-            db_conn.commit()
             
             CheckInTime = datetime.now()
             formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
+            print("Check in time:", formatted_login)
             
-            print(f"Updating attendance for employee {emp_id}")
-            update_sql = "UPDATE Attendance SET check_in = %s WHERE emp_id = %s"
-            cursor.execute(update_sql, (formatted_login, emp_id))
-            db_conn.commit()
-            
-            print(cursor.rowcount, "record(s) affected")
-            
-            return render_template("/CheckIn", date=CheckInTime, CheckInTime=formatted_login)
+            try:
+                cursor.execute(insert_sql, {'emp_id': emp_id, 'check_in': formatted_login})
+                db_conn.commit()
+                print("Data inserted")
+                return render_template("CheckIn.html", date=datetime.now(), CheckInTime=formatted_login)
+            except Exception as e:
+                return "Error occurred while inserting data: " + str(e)
+            finally:
+                cursor.close()
         else:
             return render_template('CheckIn.html')
     else:
         return render_template('CheckIn.html')
+
 
 @app.route("/CheckOut", methods=['POST', 'GET'])
 def CheckOut():
     if request.method == 'POST':
         if 'emp_id' in request.form:
             emp_id = request.form['emp_id'].lower()
-            insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
-            cursor = db_conn.cursor()
-            cursor.execute(insert_sql, (emp_id,))
-            db_conn.commit()
-            cursor.close()
-            
-            CheckOutTime = datetime.now()
-            formatted_checkout = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')
-            
-            update_statement = "UPDATE Attendance SET check_out = %(check_out)s WHERE emp_id = %(emp_id)s AND check_out IS NULL"
+            select_sql = "SELECT check_in FROM Attendance WHERE emp_id = %(emp_id)s AND check_out IS NULL"
+            update_sql = "UPDATE Attendance SET check_out = %(check_out)s WHERE emp_id = %(emp_id)s AND check_out IS NULL"
             cursor = db_conn.cursor()
             
             try:
-                cursor.execute(update_statement, {'check_out' : formatted_checkout, 'emp_id':int(emp_id)})
-                db_conn.commit()
-                print("Data updated")
+                cursor.execute(select_sql, {'emp_id': emp_id})
+                CheckInTime = cursor.fetchone()
+                
+                if CheckInTime:
+                    formatted_login = CheckInTime[0]
+                    print("Check in time:", formatted_login)
+                    
+                    CheckOutTime = datetime.now()
+                    formatted_logout = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')
+                    
+                    try:
+                        cursor.execute(update_sql, {'emp_id': emp_id, 'check_out': formatted_logout})
+                        db_conn.commit()
+                        print("Data updated")
+                        return render_template("CheckOut.html", date=datetime.now(), CheckOutTime=formatted_logout)
+                    except Exception as e:
+                        return "Error occurred while updating data: " + str(e)
+                else:
+                    return "Employee ID not found or already checked out"
             except Exception as e:
-                return str(e)
+                return "Error occurred while fetching data: " + str(e)
             finally:
                 cursor.close()
-        
-            return render_template("CheckOut.html", date = CheckOutTime, checkout_time = formatted_checkout)
         else:
-            return render_template('CheckOut.html')            
+            return render_template('CheckOut.html')
     else:
         return render_template('CheckOut.html')
-
                              
 
 if __name__ == '__main__':
