@@ -233,9 +233,7 @@ def CheckIn():
             cursor = db_conn.cursor()
             cursor.execute(insert_sql, (check_in,))
             db_conn.commit()
-                           
- 
-            return render_template("/CheckIn", CheckInTime = formatted_login)
+            return render_template('CheckIn.html', check_in=check_in)
         else:
             return render_template('CheckIn.html')            
     else:
@@ -248,6 +246,7 @@ def CheckOut():
             emp_id = request.form['emp_id'].lower()
             insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
             cursor = db_conn.cursor()
+            cursor.execute(
             
             CheckOutTime = datetime.now()
             formatted_login = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')                          
