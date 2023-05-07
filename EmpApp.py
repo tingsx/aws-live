@@ -256,7 +256,7 @@ def CheckOut():
             cursor.execute(
             
             CheckOutTime = datetime.now()
-            formatted_login = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')                          
+            formatted_login = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')                       
             try:
                 cursor.execute(update_statement, {'check_in' : formatted_login, 'emp_id':int(emp_id)})
                 db_conn.commit()
