@@ -27,6 +27,9 @@ table = 'employee'
 def home():
     return render_template('Login.html')
 
+@app.route("/Home", methods=['GET','POST'])
+def HomePg():
+    return render_template('Home.html')
 
 @app.route("/about", methods=['POST'])
 def about():
