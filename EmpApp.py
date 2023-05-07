@@ -213,6 +213,12 @@ def Attendance():
     else:
         return render_template('Attendance.html')
 
-
+@app.route("/CheckIn", methods=['POST', 'GET'])
+def CheckIn():
+    check_in = request.form['check_in']
+    insert_sql = "INSERT INTO employee VALUES (%s)"
+    cursor = db_conn.cursor()
+    
+    
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
