@@ -216,12 +216,14 @@ def Attendance():
                 db_conn.commit()
                 return render_template('Attendance.html', emp_id=emp_id, emp_id_verified=emp_id_verified)
                 
+                
     else:
         return render_template('Attendance.html')
 
 @app.route("/CheckIn", methods=['POST', 'GET'])
 def CheckIn():
-    emp_id = request.form['emp_id']
+    if request.method == 'POST':
+    emp_id = request.form['emp_id'].lower()
     insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
     cursor = db_conn.cursor()
     
@@ -239,6 +241,8 @@ def CheckIn():
         cursor.close()
         
     return render_template("/CheckIn", date = datetime.now(), CheckInTime = formatted_login)
+else:
+    return render_template('Attendance.html)
                              
                                            
 
