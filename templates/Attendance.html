@@ -43,7 +43,8 @@
 		{% if error %}
 			<p>Invalid Employee ID. Please try again.</p>
 		{% endif %}
-			
+		
+		{% if fname %}
 			<form action="/CheckIn" autocomplete="on" method="POST" enctype="multipart/form-date">
 			<button type="submit">Check In</button>
 			<br><br>
@@ -57,6 +58,7 @@
 			<form action="/Home" autocomplete="on" method = "POST" enctype="multipart/form-data">
 				<button type="submit"><u>Back to Home</u></button>		
 				</center>
+		{% endif %}
 	</body>
 	</font>
 </center>
