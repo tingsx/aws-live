@@ -22,10 +22,13 @@
 		<center>
 		<h1 style="color: navy">Employee's Attendance</h1>
 		<body bgcolor="beige">
+			<form method="POST" action="/validate_emp_id">
 			{% if error %}
         	        <p style="color: red">{{ error }}</p>
      		        {% endif %}
-			ID:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" name="emp_id"><br><br>
+			ID:<br> <input style="height:25px;font-size:14pt;color:grey;" type="text" id="emp_id" name="emp_id"><br><br>
+				<button type="submit">Submit</button>
+			</form>
 			
 			<form action="/CheckIn" autocomplete="on" method="POST" enctype="multipart/form-date">
 			<button type="submit">Check In</button>
