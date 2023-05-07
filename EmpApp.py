@@ -220,11 +220,7 @@ def Attendance():
         return render_template('Attendance.html')
 
 
-@app.route("/CheckIn", methods=['POST', 'GET'])
-def CheckIn():
-    check_in = request.form['check_in']
-    insert_sql = "INSERT INTO Attendance VALUES (%s)"
-    cursor = db_conn.cursor()
+
     
     
 if __name__ == '__main__':
