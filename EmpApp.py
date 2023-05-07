@@ -221,12 +221,30 @@ def Attendance():
         return render_template('Attendance.html')
 
 @app.route("/CheckIn", methods=['POST', 'GET'])
-def checkin():
-    check_in_time = request.form['check_in']
-    attendance = Attendance(check_in_time=check_in_time)
-    db.session.add(attendance)
-    db.session.commit()
-    return '', 200
+def CheckIn():
+    if request.method == 'POST':
+        if 'emp_id' in request.form:
+            emp_id = request.form['emp_id'].lower()
+            insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
+            cursor = db_conn.cursor()
+            cursor.execute(insert_sql, (emp_id,))
+            db_conn.commit()
+            
+            CheckInTime = datetime.now()
+            formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
+            
+            print(f"Updating attendance for employee {emp_id}")
+            update_sql = "UPDATE Attendance SET check_in = %s WHERE emp_id = %s"
+            cursor.execute(update_sql, (formatted_login, emp_id))
+            db_conn.commit()
+            
+            print(cursor.rowcount, "record(s) affected")
+            
+            return render_template("/CheckIn", date=CheckInTime, CheckInTime=formatted_login)
+        else:
+            return render_template('CheckIn.html')
+    else:
+        return render_template('CheckIn.html')
 
 @app.route("/CheckOut", methods=['POST', 'GET'])
 def CheckOut():
