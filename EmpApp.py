@@ -31,10 +31,6 @@ def home():
 def HomePg():
     return render_template('Home.html')
 
-@app.route("/about", methods=['POST'])
-def about():
-    return render_template('www.intellipaat.com')
-
 @app.route("/Register", methods=['GET', 'POST'])
 def registerEmp():
     if request.method == 'POST':
