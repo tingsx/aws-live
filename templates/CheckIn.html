@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Attendance</title>
+<head>
+<center>
+	<font color="black" size="4" style="font-family: avenir">
+	<script>
+		function dateAndTime() {
+			var currentDate = new Date();
+			var dateTimeString = currentDate.toLocaleString();
+			return dateTimeString;
+		}
+		
+		function checkIn() {
+			var checkInDT = dateAndTime();
+			localStorage.setItem("checkInTime", checkInDT);
+			var checkInElement = document.getElementById("checkin-datetime");
+			checkInElement.value = checkInDT;
+			
+		}
+		
+	</script>
+	</head>
+	<body bgcolor="beige" onload="dateAndTime()">
+		<center>
+		<h1 style="color: navy">Employee's Attendance</h1>
+			<input type="text" id="checkin-datetime" name="check_in" readonly>
+			<br><br>
+			<button onclick="checkIn()" type="submit" name="checkin">Check In</button>
+
+			<br><br>
+			<form action="Attendance.html" autocomplete="on" method = "POST" enctype="multipart/form-data">
+			<button type="submit">Back</button>		
+	</body>
+	</font>
+</center>
+</html>
+
+
+
+
+
+
