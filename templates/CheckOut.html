@@ -18,13 +18,23 @@
 			checkOutElement.value = checkOutDT;
 		}
 		
+		//window.onload = function() {
+			//var urlParams = new URLSearchParams(window.location.search);
+			//var checkInDT = urlParams.get('checkInTime');
+			//var checkInElement = document.getElementById("checkin-datetime");
+			//checkInElement.value = checkInDT;
+			//checkOut();
+		//};
+		
+		// Send an AJAX request to the server-side script to save the check-in time
+		var xhttp = new XMLHttpRequest();
+		xhttp.open("POST", "save-checkin-time.php", true);
+		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhttp.send("checkin_time=" + checkInDT);
+		
 		window.onload = function() {
-			var urlParams = new URLSearchParams(window.location.search);
-			var checkInDT = urlParams.get('checkInTime');
-			var checkInElement = document.getElementById("checkin-datetime");
-			checkInElement.value = checkInDT;
-			checkOut();
-		};
+		checkIn();
+	};
 	</script>
 	</head>
 		<h1 style="color: navy">Employee's Attendance</h1>
