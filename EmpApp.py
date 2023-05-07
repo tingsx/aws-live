@@ -195,7 +195,7 @@ def GetEmp():
         error = "Please enter an employee ID."
         return render_template('GetEmp.html', error=error)
     
-@app.route("/attendance", methods=['POST', 'GET'])
+@app.route("/Attendance", methods=['POST', 'GET'])
 def Attendance():
     if request.method == 'POST':
         if 'emp_id' in request.form:
