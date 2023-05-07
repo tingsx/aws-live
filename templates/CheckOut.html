@@ -2,10 +2,9 @@
 <html>
 <head>
 	<title>Check Out</title>
-	<!-- Added meta tag for viewport -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- Added link to a CSS file for styling -->
-	<link rel="stylesheet" href="styles.css">
+<head>
+<center>
+	<font color="black" size="4" style="font-family: avenir">
 	<script>
 		function dateAndTime() {
 			var currentDate = new Date();
@@ -27,18 +26,23 @@
 			checkOut();
 		};
 	</script>
-</head>
-<body>
-	<div class="container">
-		<h1>Employee's Attendance</h1>
-		<form>
-			<label for="checkin-datetime">Check-in time:</label>
+	</head>
+		<h1 style="color: navy">Employee's Attendance</h1>
+
+		<body bgcolor="beige" onload="dateAndTime()">
+			
 			<input type="text" id="checkin-datetime" name="check_in" readonly>
-			<label for="checkout-datetime">Check-out time:</label>
 			<input type="text" id="checkout-datetime" name="check_out" readonly>
+			<br><br>
 			<button onclick="checkOut()" type="button">Check Out</button>
-		</form>
-		<a href="/Attendance" class="back-link">Back</a>
-	</div>
-</body>
+			<br><br>
+			
+		<div class = "form-container form-container-2">
+			<a href="/Attendance">
+				<button>Back</button>
+			</a>
+		</div>	
+	</body>
+	</font>
+</center>
 </html>
