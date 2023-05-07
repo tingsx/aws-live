@@ -196,93 +196,40 @@ def GetEmp():
         return render_template('GetEmp.html', error=error)
     
 @app.route("/Attendance", methods=['POST', 'GET'])
-def Attendance():
+@app.route("/CheckIn", methods=['POST', 'GET'])
+@app.route("/CheckOut", methods=['POST', 'GET'])
+def attendance():
     if request.method == 'POST':
         if 'emp_id' in request.form:
-            emp_id = request.form['emp_id'].lower()        
-            check_sql = "SELECT emp_id FROM employee WHERE emp_id = %s"
+            emp_id = request.form['emp_id'].lower()
             cursor = db_conn.cursor()
-            cursor.execute(check_sql, (emp_id,))
+            cursor.execute("SELECT emp_id FROM employee WHERE emp_id = %s", (emp_id,))
             employee = cursor.fetchone()
-            
-            
+
             if employee is None:
                 error = "Employee ID does not exist."
                 return render_template('Attendance.html', error=error)
             else:
-                emp_id_verified = True
-                insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
-                cursor.execute(insert_sql, (emp_id,))
+                cursor.execute("INSERT INTO Attendance (emp_id) VALUES (%s)", (emp_id,))
                 db_conn.commit()
-                return render_template('Attendance.html', emp_id=emp_id, emp_id_verified=emp_id_verified)
-                
-                
+                emp_id_verified = True
+                if request.path == "/CheckIn":
+                    CheckTime = datetime.now()
+                    formatted_time = CheckTime.strftime('%d/%m/%Y %H:%M:%S')
+                    cursor.execute("UPDATE Attendance SET check_in = %s WHERE emp_id = %s", (formatted_time, emp_id))
+                    db_conn.commit()
+                    return render_template("/CheckIn", date=CheckTime, CheckInTime=formatted_time)
+                elif request.path == "/CheckOut":
+                    CheckTime = datetime.now()
+                    formatted_time = CheckTime.strftime('%d/%m/%Y %H:%M:%S')
+                    cursor.execute("UPDATE Attendance SET check_out = %s WHERE emp_id = %s AND check_out IS NULL", (formatted_time, emp_id))
+                    db_conn.commit()
+                    return render_template("/CheckOut", date=CheckTime, CheckOutTime=formatted_time)
+                else:
+                    return render_template('Attendance.html', emp_id=emp_id, emp_id_verified=emp_id_verified)
     else:
         return render_template('Attendance.html')
 
-@app.route("/CheckIn", methods=['POST', 'GET'])
-def CheckIn():
-    if request.method == 'POST':
-        if 'emp_id' in request.form:
-            emp_id = request.form['emp_id'].lower()
-            insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
-            cursor = db_conn.cursor()
-            cursor.execute(insert_sql, (emp_id,))
-            db_conn.commit()
-            
-            CheckInTime = datetime.now()
-            formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
-            
-            print(f"Updating attendance for employee {emp_id}")
-            update_sql = "UPDATE Attendance SET check_in = %s WHERE emp_id = %s"
-            cursor.execute(update_sql, (formatted_login, emp_id))
-            db_conn.commit()
-            
-            print(cursor.rowcount, "record(s) affected")
-            
-            return render_template("/CheckIn", date=CheckInTime, CheckInTime=formatted_login)
-        else:
-            return render_template('CheckIn.html')
-    else:
-        return render_template('CheckIn.html')
-
-@app.route("/CheckOut", methods=['POST', 'GET'])
-def CheckOut():
-    if request.method == 'POST':
-        if 'emp_id' in request.form:
-            emp_id = request.form['emp_id'].lower()
-            insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
-            cursor = db_conn.cursor()
-            cursor.execute(insert_sql, (emp_id,))
-            db_conn.commit()
-            cursor.close()
-            
-            CheckOutTime = datetime.now()
-            formatted_checkout = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')
-            
-            update_statement = "UPDATE Attendance SET check_out = %(check_out)s WHERE emp_id = %(emp_id)s AND check_out IS NULL"
-            cursor = db_conn.cursor()
-            
-            try:
-                cursor.execute(update_statement, {'check_out' : formatted_checkout, 'emp_id':int(emp_id)})
-                db_conn.commit()
-                print("Data updated")
-            except Exception as e:
-                return str(e)
-            finally:
-                cursor.close()
-        
-            return render_template("CheckOut.html", date = CheckOutTime, checkout_time = formatted_checkout)
-        else:
-            return render_template('CheckOut.html')            
-    else:
-        return render_template('CheckOut.html')
-
-                             
-
-
-
-    
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
