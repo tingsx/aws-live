@@ -15,18 +15,19 @@
             localStorage.setItem("checkInTime", checkInDT);
             var checkInElement = document.getElementById("checkin-datetime");
             checkInElement.value = checkInDT;
-            
-            $.ajax({
-                type: "POST",
-                url: "/checkin",
-                data: JSON.stringify({checkInTime: checkInDT}),
-                contentType: "application/json",
-                success: function(response) {
-                    alert("Check-in time stored successfully!");
-                },
-                error: function() {
-                    alert("Failed to store check-in time.");
-                }
+           
+        $.ajax({
+            type: "POST",
+            url: "/checkin",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                alert("Check-in time stored successfully!");
+        }
+        error: function() {
+            alert("Failed to store check-in time.");
+        }
             });
         }
     </script>
