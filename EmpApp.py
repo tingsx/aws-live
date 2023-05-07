@@ -229,13 +229,13 @@ def CheckIn():
             cursor = db_conn.cursor()
             cursor.execute(check_sql, (emp_id,))
             
-            insert_sql = "INSERT INTO Attendance (emp_id, check_in) VALUES (%s, %s)"
-            cursor = db_conn.cursor()
-            cursor.execute(insert_sql, (check_in,))
-            db_conn.commit()
-            return render_template('CheckIn.html', check_in=check_in)
-        else:
-            return render_template('CheckIn.html')            
+            if cursor.fetchone():
+                check_in = datetime.now().strftime(%d/%m/%Y %H:%M:%S')
+                insert_sql = "INSERT INTO Attendance (emp_id, check_in) VALUES (%s, %s)"
+                cursor.execute(insert_sql, (emp_id, check_in,))
+                db_conn.commit()
+                return render_template('CheckIn.html', check_in=check_in)
+         return render_template('CheckIn.html')            
     else:
         return render_template('CheckIn.html')
                              
