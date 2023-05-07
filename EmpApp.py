@@ -199,21 +199,20 @@ def GetEmp():
 def Attendance():
     if request.method == 'POST':
         if 'emp_id' in request.form:
-            emp_id = request.form['emp_id']
+            emp_id = request.form.get('emp_id')
+            if not emp_id:
+                error = "PLease enter an employee ID."
+                return render_template("/Attendance", error=error)
             check_sql = "SELECT * FROM employee WHERE emp_id = %s"
             cursor = db_conn.cursor()
             cursor.execute(check_sql, (emp_id,))
             employee = cursor.fetchone()
             
-            if employee is not None:
-                #employee exists in database
-                print("Welcome, employee", emp_id)
+            if employee is None:
+                error = "Employee ID does not exist."
+                return render_template("/Attendance, error=error)
             else:
-                error = "Employee ID not found."
                 return render_template("Attendance.html", error=error)
-        else:
-            error = "Please enter an employee ID."
-            return render_template("Attendance.html", error=error)
     else:
         return render_template("Attendance.html")
 
