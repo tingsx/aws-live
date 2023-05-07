@@ -210,7 +210,7 @@ def Attendance():
             
             if employee is None:
                 error = "Employee ID does not exist."
-                return render_template("/Attendance, error=error)
+                return render_template("/Attendance", error=error)
             else:
                 return render_template("Attendance.html", error=error)
     else:
