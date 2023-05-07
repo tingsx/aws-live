@@ -235,7 +235,7 @@ def CheckIn():
                 cursor.execute(insert_sql, (emp_id, check_in,))
                 db_conn.commit()
                 return render_template('CheckIn.html', check_in=check_in)
-            return render_template('CheckIn.html')            
+        
     else:
         return render_template('CheckIn.html')
                              
