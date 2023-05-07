@@ -241,18 +241,12 @@ def CheckIn():
         
             return render_template("/CheckIn", date = CheckInTime, CheckInTime = formatted_login)
         else:
-            return render_template('CheckIn.html')
-            
-
-            insert_sql = "INSERT INTO Attendance (formatted_login) VALUES (%s)"
-            cursor = db_conn.cursor()
-            
-    
-            
+            return render_template('CheckIn.html')            
     else:
         return render_template('CheckIn.html')
                              
-                                           
+@app.route("/CheckOut", methods=['POST', 'GET'])
+def CheckOut():
 
 
     
