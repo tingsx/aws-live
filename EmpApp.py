@@ -199,7 +199,7 @@ def GetEmp():
 def Attendance():
     if request.method == 'POST':
         if 'emp_id' in request.form:
-            emp_id = request.form['emp_id'].lower()            
+            emp_id = (request.form.get['emp_id']).lower()        
             check_sql = "SELECT emp_id FROM employee WHERE emp_id = %s"
             cursor = db_conn.cursor()
             cursor.execute(check_sql, (emp_id,))
