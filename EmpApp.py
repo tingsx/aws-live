@@ -253,12 +253,18 @@ def CheckOut():
             emp_id = request.form['emp_id'].lower()
             insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
             cursor = db_conn.cursor()
-            cursor.execute(
+            cursor.execute(insert_sql, (emp_id,))
+            db_conn.commit()
+            cursor.close()
             
             CheckOutTime = datetime.now()
-            formatted_login = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')                       
+            formatted_checkout = CheckOutTime.strftime('%d/%m/%Y %H:%M:%S')
+            
+            update_statement = "UPDATE Attendance SET check_out = %(check_out)s WHERE emp_id = %(emp_id)s AND check_out IS NULL"
+            cursor = db_conn.cursor()
+            
             try:
-                cursor.execute(update_statement, {'check_in' : formatted_login, 'emp_id':int(emp_id)})
+                cursor.execute(update_statement, {'check_out' : formatted_checkout, 'emp_id':int(emp_id)})
                 db_conn.commit()
                 print("Data updated")
             except Exception as e:
@@ -266,11 +272,12 @@ def CheckOut():
             finally:
                 cursor.close()
         
-            return render_template("/CheckOut", date = CheckOutTime, CheckOutTime = formatted_login)
+            return render_template("CheckOut.html", date = CheckOutTime, checkout_time = formatted_checkout)
         else:
             return render_template('CheckOut.html')            
     else:
         return render_template('CheckOut.html')
+
                              
 
 
