@@ -202,7 +202,7 @@ def Attendance():
             emp_id = request.form.get('emp_id')
             if not emp_id:
                 error = "PLease enter an employee ID."
-                return render_template("Attendance.html", error=error)
+                return render_template('Attendance.html', error=error)
             
             check_sql = "SELECT * FROM employee WHERE emp_id = %s"
             cursor = db_conn.cursor()
@@ -211,11 +211,11 @@ def Attendance():
             
             if employee is None:
                 error = "Employee ID does not exist."
-                return render_template("Attendance.html", error=error)
+                return render_template('Attendance.html', error=error)
             else:
-                return render_template("Attendance.html", error=error)
+                return render_template('Attendance.html', error=error)
     else:
-        return render_template("Attendance.html")
+        return render_template('Attendance.html')
 
 
 if __name__ == '__main__':
