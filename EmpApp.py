@@ -209,7 +209,7 @@ def Attendance():
                 error = "Employee ID does not exist."
                 return render_template('Attendance.html', error=error)
             else:
-                return render_template('CheckIn.html', emp_id=emp_id))
+                return render_template('CheckIn.html', emp_id=emp_id)
     else:
         return render_template('Attendance.html')
 
