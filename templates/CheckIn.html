@@ -20,6 +20,18 @@
 			
 		}
 		
+		$(document).ready(function() {
+			$("#checkin-btn").click(function() {
+				$.post("/checkin", function(data, status) {
+					if (status === "success") {
+						alert("Check-in time stored successfully!");
+					} else {
+						alert("Failed to store check-in time.");
+					}
+				});
+			});
+		});
+		
 	</script>
 	</head>
 	<body bgcolor="beige" onload="dateAndTime()">
@@ -27,7 +39,7 @@
 		<h1 style="color: navy">Employee's Attendance</h1>
 			<input type="text" id="checkin-datetime" name="check_in" readonly>
 			<br><br>
-			<button onclick="checkIn()" type="submit" name="checkin">Check In</button>
+			<button onclick="checkIn()" type="submit" id="checkin-btn" name="checkin">Check In</button>
 
 			<br><br>
 			<form action="Attendance.html" autocomplete="on" method = "POST" enctype="multipart/form-data">
