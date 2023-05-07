@@ -211,8 +211,8 @@ def Attendance():
                 error = "Employee ID does not exist."
                 return render_template('Attendance.html', error=error)
             else:
-                
-                return render_template('Attendance.html', emp_id=emp_id)
+                emp_id_verified = True
+                return render_template('Attendance.html', emp_id=emp_id, emp_id_verified=emp_id_verified)
     else:
         return render_template('Attendance.html')
 
