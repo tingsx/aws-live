@@ -227,22 +227,22 @@ def CheckIn():
         insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
         cursor = db_conn.cursor()
     
-    CheckInTime = datetime.now()
-    formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
-    print("Check In Time: {}", formatted_login)
+        CheckInTime = datetime.now()
+        formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
+        print("Check In Time: {}", formatted_login)
                                            
-    try:
-        cursor.execute(update_statement, {'check_in' : formatted_login, 'emp_id':int(emp_id)})
-        db_conn.commit()
-        print("Data updated")
-    except Exception as e:
-        return str(e)
-    finally:
-        cursor.close()
+        try:
+            cursor.execute(update_statement, {'check_in' : formatted_login, 'emp_id':int(emp_id)})
+            db_conn.commit()
+            print("Data updated")
+        except Exception as e:
+            return str(e)
+        finally:
+            cursor.close()
         
-    return render_template("/CheckIn", date = datetime.now(), CheckInTime = formatted_login)
-else:
-    return render_template('Attendance.html')
+        return render_template("/CheckIn", date = datetime.now(), CheckInTime = formatted_login)
+    else:
+        return render_template('Attendance.html')
                              
                                            
 
