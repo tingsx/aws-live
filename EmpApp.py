@@ -233,7 +233,7 @@ def CheckIn():
         cursor.execute(update_statement, {'check_in' : formatted_login, 'emp_id':int(emp_id)})
         db_conn.commit()
         print("Data updated")
-    exception Exception as e:
+    except Exception as e:
         return str(e)
     finally:
         cursor.close()
