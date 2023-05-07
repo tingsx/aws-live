@@ -222,7 +222,7 @@ def Attendance():
 
 @app.route("/CheckIn", methods=['POST', 'GET'])
 def checkin():
-    check_in_time = request.form['checkIn']
+    check_in_time = request.form['check_in']
     attendance = Attendance(check_in_time=check_in_time)
     db.session.add(attendance)
     db.session.commit()
