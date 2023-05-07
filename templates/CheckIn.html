@@ -12,15 +12,25 @@
 			return dateTimeString;
 		}
 		
-		function setCheckInTime() {
+		function checkIn() {
 			var checkInDT = dateAndTime();
+			localStorage.setItem("checkInTime", checkInDT);
 			var checkInElement = document.getElementById("checkin-datetime");
 			checkInElement.value = checkInDT;
+			
 		}
 		
-		window.onload = function() {
-			setCheckInTime();
-		};
+		$(document).ready(function() {
+			$("#checkin-btn").click(function() {
+				$.post("/checkin", function(data, status) {
+					if (status === "success") {
+						alert("Check-in time stored successfully!");
+					} else {
+						alert("Failed to store check-in time.");
+					}
+				});
+			});
+		});
 		
 	</script>
 	</head>
@@ -28,7 +38,6 @@
 		<h1 style="color: navy">Employee's Attendance</h1>
 
 		<center>
-		<form action="/CheckIn" method="POST">
 		<input type="text" id="checkin-datetime" name="check_in" readonly>
 			
 			<br><br>
