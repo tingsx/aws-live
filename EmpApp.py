@@ -225,7 +225,7 @@ def CheckIn():
     if request.method == 'POST':
         if 'emp_id' in request.form:
             emp_id = request.form['emp_id'].lower()
-            insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
+            insert_sql = "INSERT INTO Attendance (emp_id, check_in) VALUES (%s, %s)"
             cursor = db_conn.cursor()
             
             CheckInTime = datetime.now()
