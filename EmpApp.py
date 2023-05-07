@@ -221,8 +221,9 @@ def Attendance():
 
 @app.route("/CheckIn", methods=['POST', 'GET'])
 def CheckIn():
-    if flask.request.method == 'GET':
-        emp_id = flask.request.args.get('emp_id')
+    if request.method == 'POST':
+        emp_id = request.form.get('emp_id', '')
+
     #emp_id = request.form['emp_id']
     update_statement = "UPDATE employee SET check_in = (%(check_in)s) WHERE emp_id = %(emp_id)s"
     cursor = db_conn.cursor()
