@@ -225,23 +225,26 @@ def CheckIn():
     if request.method == 'POST':
         if 'emp_id' in request.form:
             emp_id = request.form['emp_id'].lower()
-            check_sql = "SELECT emp_id FROM employee WHERE emp_id = %s"
+            insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
             cursor = db_conn.cursor()
-            cursor.execute(check_sql, (emp_id,))
+            cursor.execute(insert_sql, (emp_id,))
+            db_conn.commit()
             
-            if cursor.fetchone():
-                CheckInTime = datetime.now()
-                formatted_login = CheckInTime.strftime('%Y-%m-%d %H:%M:%S')                          
-                update_sql = "UPDATE Attendance SET check_in = %s WHERE emp_id = %s"
-                cursor.execute(update_sql, (formatted_login, emp_id,))
-                db_conn.commit()
-                
-                return render_template("/CheckIn", date=CheckInTime, CheckInTime=formatted_login)
-        
-        return render_template('CheckIn.html')
-    
+            CheckInTime = datetime.now()
+            formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
+            
+            update_sql = "UPDATE Attendance SET check_in = %s WHERE emp_id = %s"
+            cursor.execute(update_sql, (formatted_login, emp_id))
+            db_conn.commit()
+            
+            print(cursor.rowcount, "record(s) affected")
+            
+            return render_template("/CheckIn", date=CheckInTime, CheckInTime=formatted_login)
+        else:
+            return render_template('CheckIn.html')
     else:
         return render_template('CheckIn.html')
+
 
                              
 
