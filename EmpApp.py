@@ -230,7 +230,7 @@ def CheckIn():
             cursor.execute(check_sql, (emp_id,))
             
             if cursor.fetchone():
-                check_in = datetime.now().strftime(%d/%m/%Y %H:%M:%S')
+                check_in = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
                 insert_sql = "INSERT INTO Attendance (emp_id, check_in) VALUES (%s, %s)"
                 cursor.execute(insert_sql, (emp_id, check_in,))
                 db_conn.commit()
