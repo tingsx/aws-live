@@ -206,13 +206,16 @@ def Attendance():
             employee = cursor.fetchone()
             
             
-            
             if employee is None:
                 error = "Employee ID does not exist."
                 return render_template('Attendance.html', error=error)
             else:
                 emp_id_verified = True
+                insert_sql = "INSERT INTO Attendance (emp_id) VALUES ($s)"
+                cursor.execute(insert_sql, (emp_id,))
+                db_conn.commit()
                 return render_template('Attendance.html', emp_id=emp_id, emp_id_verified=emp_id_verified)
+                
     else:
         return render_template('Attendance.html')
 
