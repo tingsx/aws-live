@@ -240,11 +240,11 @@ def CheckIn():
             
             print(cursor.rowcount, "record(s) affected")
             
-            return render_template("/CheckIn", date=CheckInTime, CheckInTime=formatted_login)
+            return render_template("/CheckInOut", date=CheckInTime, CheckInTime=formatted_login)
         else:
-            return render_template('CheckIn.html')
+            return render_template('CheckInOut.html')
     else:
-        return render_template('CheckIn.html')
+        return render_template('CheckInOut.html')
 
 @app.route("/CheckOut", methods=['POST', 'GET'])
 def CheckOut():
@@ -272,11 +272,11 @@ def CheckOut():
             finally:
                 cursor.close()
         
-            return render_template("CheckOut.html", date = CheckOutTime, checkout_time = formatted_checkout)
+            return render_template("CheckInOut.html", date = CheckOutTime, checkout_time = formatted_checkout)
         else:
-            return render_template('CheckOut.html')            
+            return render_template('CheckInOut.html')            
     else:
-        return render_template('CheckOut.html')
+        return render_template('CheckInOut.html')
 
                                 
     
