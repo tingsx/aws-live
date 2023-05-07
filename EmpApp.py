@@ -233,6 +233,7 @@ def CheckIn():
             CheckInTime = datetime.now()
             formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
             
+            print(f"Updating attendance for employee {emp_id}")
             update_sql = "UPDATE Attendance SET check_in = %s WHERE emp_id = %s"
             cursor.execute(update_sql, (formatted_login, emp_id))
             db_conn.commit()
