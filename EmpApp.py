@@ -223,9 +223,9 @@ def Attendance():
 @app.route("/CheckIn", methods=['POST', 'GET'])
 def CheckIn():
     if request.method == 'POST':
-    emp_id = request.form['emp_id']
-    insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
-    cursor = db_conn.cursor()
+        emp_id = request.form['emp_id']
+        insert_sql = "INSERT INTO Attendance (emp_id) VALUES (%s)"
+        cursor = db_conn.cursor()
     
     CheckInTime = datetime.now()
     formatted_login = CheckInTime.strftime('%d/%m/%Y %H:%M:%S')
@@ -242,7 +242,7 @@ def CheckIn():
         
     return render_template("/CheckIn", date = datetime.now(), CheckInTime = formatted_login)
 else:
-    return render_template('Attendance.html)
+    return render_template('Attendance.html')
                              
                                            
 
