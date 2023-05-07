@@ -1,48 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Check In</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        function dateAndTime() {
-            var currentDate = new Date();
-            var dateTimeString = currentDate.toLocaleString();
-            return dateTimeString;
-        }
-        
-        function checkIn() {
-            var checkInDT = dateAndTime();
-            localStorage.setItem("checkInTime", checkInDT);
-            var checkInElement = document.getElementById("checkin-datetime");
-            checkInElement.value = checkInDT;
-           
-        $.ajax({
-            type: "POST",
-            url: "/checkin",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                alert("Check-in time stored successfully!");
-        }
-        error: function() {
-            alert("Failed to store check-in time.");
-        }
-            });
-        }
-    </script>
-</head>
-<body>
-    <h1>Employee's Attendance</h1>
+	<title>Check In</title>
+<head>
+<center>
+	<font color="black" size="4" style="font-family: avenir">
+	<script>
+		function dateAndTime() {
+			var currentDate = new Date();
+			var dateTimeString = currentDate.toLocaleString();
+			return dateTimeString;
+		}
+		
+		function checkIn() {
+			var checkInDT = dateAndTime();
+			localStorage.setItem("checkInTime", checkInDT);
+			var checkInElement = document.getElementById("checkin-datetime");
+			checkInElement.value = checkInDT;
+			
+		}
+		
+		$(document).ready(function() {
+			$("#checkin-btn").click(function() {
+				$.post("/checkin", function(data, status) {
+					if (status === "success") {
+						alert("Check-in time stored successfully!");
+					} else {
+						alert("Failed to store check-in time.");
+					}
+				});
+			});
+		});
+		
+	</script>
+	</head>
+	<body bgcolor="beige" onload="dateAndTime()">
+		<h1 style="color: navy">Employee's Attendance</h1>
 
-    <input type="text" id="checkin-datetime" name="check_in" readonly>
+		<center>
+		<input type="text" id="checkin-datetime" name="check_in" readonly>
+			
+			<br><br>
+			<button onclick="checkIn()" type="submit" id="checkin-btn" name="checkin">Check In</button>
 
-    <br><br>
-
-    <button onclick="checkIn()">Check In</button>
-
-    <script>
-        dateAndTime();
-    </script>
-</body>
+			<br><br>	
+			
+		<div class = "form-container form-container-2">
+			<a href="/Attendance">
+				<button>Back</button>
+			</a>
+		</div>
+	</body>
+	</font>
+</center>
 </html>
